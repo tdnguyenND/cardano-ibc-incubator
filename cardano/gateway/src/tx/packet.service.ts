@@ -29,7 +29,7 @@ import { IBCModuleRedeemer } from '@shared/types/port/ibc_module_redeemer';
 import {
   deleteKeySortMap,
   deleteSortMap,
-  getDenomPrefix,
+  getDenomPrefix, insertSortMap,
   insertSortMapWithNumberKey,
   sortedStringify,
 } from '@shared/helpers/helper';
@@ -374,7 +374,7 @@ export class PacketService {
     );
 
     // build update channel datum
-    const updatedChannelDatum: ChannelDatum = {
+    let updatedChannelDatum: ChannelDatum = {
       ...channelDatum,
       state: {
         ...channelDatum.state,
@@ -386,7 +386,7 @@ export class PacketService {
         ),
       },
     };
-    const encodedUpdatedChannelDatum: string = await this.lucidService.encode<ChannelDatum>(
+    let encodedUpdatedChannelDatum: string = await this.lucidService.encode<ChannelDatum>(
       updatedChannelDatum,
       'channel',
     );
@@ -422,8 +422,8 @@ export class PacketService {
     if (
       this._hasVoucherPrefix(
         fungibleTokenPacketData.denom,
-        convertHex2String(packet.destination_port),
-        convertHex2String(packet.destination_channel),
+        convertHex2String(packet.source_port),
+        convertHex2String(packet.source_channel),
       )
     ) {
       this.logger.log('recv unescrow');
@@ -442,6 +442,7 @@ export class PacketService {
         transferAmount: BigInt(fungibleTokenPacketData.amount),
         receiverAddress: this.lucidService.credentialToAddress(fungibleTokenPacketData.receiver),
         constructedAddress,
+        denomToken: this._unpackOriginalDenom(fungibleTokenPacketData.denom, convertHex2String(packet.source_port), convertHex2String(packet.source_channel)),
       };
       return this.lucidService.createUnsignedRecvPacketUnescrowTx(unsignedRecvPacketUnescrowParams);
     }
@@ -775,10 +776,11 @@ export class PacketService {
       'channel',
     );
     const deploymentConfig = this.configService.get('deployment');
-
+    const denomTrace = channelDatum.denomTrace.get(sendPacketOperator.token.denom);
     if (
+      denomTrace &&
       this._hasVoucherPrefix(
-        sendPacketOperator.token.denom,
+        denomTrace,
         sendPacketOperator.sourcePort,
         sendPacketOperator.sourceChannel,
       )
@@ -1111,6 +1113,10 @@ export class PacketService {
   private _hasVoucherPrefix(denom: string, portId: string, channelId: string): boolean {
     const voucherPrefix = getDenomPrefix(portId, channelId);
     return denom.startsWith(voucherPrefix);
+  }
+  private _unpackOriginalDenom(denom: string, portId: string, channelId: string): string {
+    const voucherPrefix = getDenomPrefix(portId, channelId);
+    return denom.slice(voucherPrefix.length);
   }
   private getSpendChannelRefUtxo(): UTxO {
     return this.configService.get('deployment').validators.spendChannel.refUtxo;

@@ -37,6 +37,7 @@ fn setup() -> (ChannelDatum, AuthToken) {
       },
       port_id: "port-1",
       token: mock_auth_token,
+      denom_trace: dict.new(),
     }
 
   (mock_channel_datum, mock_auth_token)

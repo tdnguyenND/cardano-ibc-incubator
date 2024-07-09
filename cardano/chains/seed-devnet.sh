@@ -87,5 +87,5 @@ for address in $addresses; do
   seedFaucet $address $amount
 done
 
-# seedFaucet "addr_test1vz8nzrmel9mmmu97lm06uvm55cj7vny6dxjqc0y0efs8mtqsd8r5m" 30000000 # 30 Ada to the node
-# seedFaucet "addr_test1qrwuz99eywdpm9puylccmvqfu6lue968rtt36nzeal7czuu4wq3n84h8ntp3ta30kyxx8r0x2u4tgr5a8y9hp5vjpngsmwy0wg" 30000000
+ seedFaucet "addr_test1wppj84sgj0ays2m260s4c8cs2aghpyt9ydnkr8sqlddckvsj7szqf" 30000000 # 30 Ada to the node
+ seedFaucet "ed25519_sk1rvgjxs8sddhl46uqtv862s53vu4jf6lnk63rcn7f0qwzyq85wnlqgrsx42" 30000000

@@ -578,11 +578,15 @@ export class LucidService {
         },
         {
           ...dto.transferModuleUtxo.assets,
-          lovelace: dto.transferModuleUtxo.assets.lovelace - dto.transferAmount,
+          [dto.denomToken]: calculateTransferToken(
+              dto.transferModuleUtxo.assets,
+              0n - BigInt(dto.transferAmount),
+              dto.denomToken,
+          ),
         },
       )
       .payToAddress(dto.receiverAddress, {
-        lovelace: dto.transferAmount,
+        [dto.denomToken]: dto.transferAmount,
       });
 
     return tx;
@@ -870,11 +874,6 @@ export class LucidService {
         },
         {
           ...dto.transferModuleUTxO.assets,
-          [dto.voucherTokenUnit]: calculateTransferToken(
-            dto.transferModuleUTxO.assets,
-            BigInt(dto.transferAmount),
-            dto.voucherTokenUnit,
-          ),
         },
       );
 

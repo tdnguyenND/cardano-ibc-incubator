@@ -632,6 +632,7 @@ test succeed_chan_open_init() {
       },
       port_id: mock_data.port_id,
       token: channel_token,
+      denom_trace: dict.new(),
     }
 
   let channel_output =
@@ -751,6 +752,7 @@ test succeed_chan_open_try() {
       },
       port_id: mock_data.port_id,
       token: channel_token,
+      denom_trace: dict.new(),
     }
 
   let channel_output =

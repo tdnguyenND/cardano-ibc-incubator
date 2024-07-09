@@ -53,6 +53,7 @@ fn setup() -> (ChannelDatum, ChannelDatum, Packet, ByteArray) {
       },
       port_id: "port-1",
       token: mock_auth_token,
+      denom_trace: dict.new(),
     }
 
   let output_channel_datum =

@@ -905,6 +905,7 @@ fn setup() -> MockData {
       },
       port_id,
       token: channel_token,
+      denom_trace: dict.new(),
     }
 
   let channel_output =

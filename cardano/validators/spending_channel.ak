@@ -1179,6 +1179,7 @@ test succeed_chan_open_ack() {
       },
       port_id: mock_data.port_id,
       token: mock_data.channel_token,
+      denom_trace: dict.new(),
     }
 
   let channel_input =
@@ -1231,6 +1232,7 @@ test succeed_chan_open_ack() {
       },
       port_id: mock_data.port_id,
       token: mock_data.channel_token,
+      denom_trace: dict.new(),
     }
 
   let channel_output =
@@ -1407,6 +1409,7 @@ test succeed_chan_open_confirm() {
       },
       port_id: mock_data.port_id,
       token: mock_data.channel_token,
+      denom_trace: dict.new(),
     }
 
   let channel_input =
@@ -1618,6 +1621,7 @@ test succeed_recv_packet() {
       },
       port_id: mock_data.port_id,
       token: mock_data.channel_token,
+      denom_trace: dict.new(),
     }
 
   let channel_input =
@@ -1878,6 +1882,7 @@ test succeed_send_packet() {
       },
       port_id: mock_data.port_id,
       token: mock_data.channel_token,
+      denom_trace: dict.new(),
     }
 
   let channel_input =
@@ -2013,6 +2018,7 @@ test succeed_timeout_packet() {
       },
       port_id: mock_data.port_id,
       token: mock_data.channel_token,
+      denom_trace: dict.new(),
     }
 
   let input_channel_datum = send_packet(packet, input_channel_datum)
@@ -2271,6 +2277,7 @@ test succeed_acknowledge_packet() {
       },
       port_id: mock_data.port_id,
       token: mock_data.channel_token,
+      denom_trace: dict.new(),
     }
 
   let input_channel_datum = send_packet(packet, input_channel_datum)

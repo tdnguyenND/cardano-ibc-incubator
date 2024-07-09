@@ -15,6 +15,7 @@ export type ChannelDatum = {
   state: ChannelDatumState;
   port: string;
   token: AuthToken;
+  denomTrace: Map<string, string>;
 };
 
 export async function encodeChannelDatum(channelDatum: ChannelDatum, Lucid: typeof import('@dinhbx/lucid-custom')) {
@@ -52,11 +53,13 @@ export async function encodeChannelDatum(channelDatum: ChannelDatum, Lucid: type
     policyId: Data.Bytes(),
     name: Data.Bytes(),
   });
+  const DenomTraceSchema = Data.Map(Data.Bytes(), Data.Bytes());
 
   const ChannelDatumSchema = Data.Object({
     state: ChannelDatumStateSchema,
     port: Data.Bytes(),
     token: AuthTokenSchema,
+    denomTrace: DenomTraceSchema,
   });
   type TChannelDatum = Data.Static<typeof ChannelDatumSchema>;
   const TChannelDatum = ChannelDatumSchema as unknown as ChannelDatum;
@@ -98,11 +101,13 @@ export async function decodeChannelDatum(channelDatum: string, Lucid: typeof imp
     policyId: Data.Bytes(),
     name: Data.Bytes(),
   });
+  const DenomTraceSchema = Data.Map(Data.Bytes(), Data.Bytes());
 
   const ChannelDatumSchema = Data.Object({
     state: ChannelDatumStateSchema,
     port: Data.Bytes(),
     token: AuthTokenSchema,
+    denomTrace: DenomTraceSchema,
   });
   type TChannelDatum = Data.Static<typeof ChannelDatumSchema>;
   const TChannelDatum = ChannelDatumSchema as unknown as ChannelDatum;

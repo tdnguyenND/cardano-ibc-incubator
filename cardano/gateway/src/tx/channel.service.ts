@@ -245,6 +245,7 @@ export class ChannelService {
       },
       port: convertString2Hex(channelOpenInitOperator.port_id),
       token: channelToken,
+      denomTrace: new Map(),
     };
     const encodedMintChannelRedeemer: string = await this.lucidService.encode<MintChannelRedeemer>(
       mintChannelRedeemer,
@@ -378,6 +379,7 @@ export class ChannelService {
       },
       port: convertString2Hex(channelOpenTryOperator.port_id),
       token: channelToken,
+      denomTrace: new Map(),
     };
 
     const encodedMintChannelRedeemer: string = await this.lucidService.encode<MintChannelRedeemer>(

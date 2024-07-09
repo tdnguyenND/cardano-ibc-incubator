@@ -11,6 +11,7 @@ pub type ChannelDatum {
   state: ChannelDatumState,
   port_id: ByteArray,
   token: AuthToken,
+  denom_trace: Dict<ByteArray, ByteArray>,
 }
 
 pub type ChannelDatumState {
