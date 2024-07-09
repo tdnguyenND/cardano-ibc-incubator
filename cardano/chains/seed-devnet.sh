@@ -88,4 +88,4 @@ for address in $addresses; do
 done
 
  seedFaucet "addr_test1wppj84sgj0ays2m260s4c8cs2aghpyt9ydnkr8sqlddckvsj7szqf" 30000000 # 30 Ada to the node
- seedFaucet "ed25519_sk1rvgjxs8sddhl46uqtv862s53vu4jf6lnk63rcn7f0qwzyq85wnlqgrsx42" 30000000
+# seedFaucet "ed25519_sk1rvgjxs8sddhl46uqtv862s53vu4jf6lnk63rcn7f0qwzyq85wnlqgrsx42" 30000000
