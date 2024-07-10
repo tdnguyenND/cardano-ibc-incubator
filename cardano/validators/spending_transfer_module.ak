@@ -1035,7 +1035,7 @@ test on_chan_open_init_succeed() {
     mock.port_id,
     mock.channel_minting_policy_id,
     mock.voucher_minting_policy_id,
-    Void,
+    TransferModuleDatum { denom_trace: dict.new()},
     module_redeemer,
     context,
   )
@@ -1098,7 +1098,7 @@ test on_chan_open_try_succeed() {
     mock.port_id,
     mock.channel_minting_policy_id,
     mock.voucher_minting_policy_id,
-    Void,
+    TransferModuleDatum { denom_trace: dict.new()},
     module_redeemer,
     context,
   )
@@ -1160,7 +1160,7 @@ test on_chan_open_ack_succeed() {
     mock.port_id,
     mock.channel_minting_policy_id,
     mock.voucher_minting_policy_id,
-    Void,
+    TransferModuleDatum { denom_trace: dict.new()},
     module_redeemer,
     context,
   )
@@ -1218,7 +1218,7 @@ test on_chan_open_confirm_succeed() {
     mock.port_id,
     mock.channel_minting_policy_id,
     mock.voucher_minting_policy_id,
-    Void,
+    TransferModuleDatum { denom_trace: dict.new()},
     module_redeemer,
     context,
   )
@@ -1309,7 +1309,7 @@ test on_recv_packet_mint_voucher_succeed() {
     mock.port_id,
     mock.channel_minting_policy_id,
     mock.voucher_minting_policy_id,
-    Void,
+    TransferModuleDatum { denom_trace: dict.new()},
     module_redeemer,
     context,
   )
@@ -1420,7 +1420,7 @@ test on_recv_packet_unescrow_succeed() {
     mock.port_id,
     mock.channel_minting_policy_id,
     mock.voucher_minting_policy_id,
-    Void,
+    TransferModuleDatum { denom_trace: dict.new()},
     module_redeemer,
     context,
   )
@@ -1506,7 +1506,7 @@ test transfer_escrow_succeed() {
     mock.port_id,
     mock.channel_minting_policy_id,
     mock.voucher_minting_policy_id,
-    Void,
+    TransferModuleDatum { denom_trace: dict.new()},
     module_redeemer,
     context,
   )
@@ -1619,7 +1619,7 @@ test transfer_burn_voucher_succeed() {
     mock.port_id,
     mock.channel_minting_policy_id,
     mock.voucher_minting_policy_id,
-    Void,
+    TransferModuleDatum { denom_trace: dict.new()},
     module_redeemer,
     context,
   )
@@ -1714,7 +1714,7 @@ test on_timeout_packet_mint_voucher_succeed() {
     mock.port_id,
     mock.channel_minting_policy_id,
     mock.voucher_minting_policy_id,
-    Void,
+    TransferModuleDatum { denom_trace: dict.new()},
     module_redeemer,
     context,
   )
@@ -1820,7 +1820,7 @@ test on_timeout_packet_unescrow_succeed() {
     mock.port_id,
     mock.channel_minting_policy_id,
     mock.voucher_minting_policy_id,
-    Void,
+    TransferModuleDatum { denom_trace: dict.new()},
     module_redeemer,
     context,
   )
@@ -1914,7 +1914,7 @@ test on_acknowledgement_packet_result_succeed() {
     mock.port_id,
     mock.channel_minting_policy_id,
     mock.voucher_minting_policy_id,
-    Void,
+    TransferModuleDatum { denom_trace: dict.new()},
     module_redeemer,
     context,
   )
@@ -2019,7 +2019,7 @@ test on_acknowledgement_packet_error_mint_voucher_succeed() {
     mock.port_id,
     mock.channel_minting_policy_id,
     mock.voucher_minting_policy_id,
-    Void,
+    TransferModuleDatum { denom_trace: dict.new()},
     module_redeemer,
     context,
   )
@@ -2135,7 +2135,7 @@ test on_acknowledgement_packet_error_unescrow_succeed() {
     mock.port_id,
     mock.channel_minting_policy_id,
     mock.voucher_minting_policy_id,
-    Void,
+    TransferModuleDatum { denom_trace: dict.new()},
     module_redeemer,
     context,
   )
