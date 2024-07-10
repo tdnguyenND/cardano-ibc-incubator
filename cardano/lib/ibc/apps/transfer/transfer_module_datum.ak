@@ -1,5 +1,5 @@
 use aiken/dict.{Dict}
 
 pub type TransferModuleDatum {
-    denom_trace: Dict<ByteArray, Bool>,
+    denom_trace: Dict<ByteArray, ByteArray>,
 }
