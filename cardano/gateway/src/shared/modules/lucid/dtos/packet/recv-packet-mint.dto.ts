@@ -13,6 +13,7 @@ export type UnsignedRecvPacketMintDto = {
   encodedSpendTransferModuleRedeemer: string;
   encodedMintVoucherRedeemer: string;
   encodedUpdatedChannelDatum: string;
+  encodedUpdatedTransferModuleDatum: string;
 
   channelTokenUnit: string;
   voucherTokenUnit: string;

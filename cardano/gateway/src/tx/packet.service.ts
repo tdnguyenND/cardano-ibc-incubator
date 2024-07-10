@@ -66,6 +66,7 @@ import {
   validateAndFormatSendPacketParams,
   validateAndFormatTimeoutPacketParams,
 } from './helper/packet.validate';
+import {TransferModuleDatum} from "@shared/types/transfer-module-datum";
 
 @Injectable()
 export class PacketService {
@@ -345,7 +346,9 @@ export class PacketService {
     // Get mock module utxo
     const transferModuleUtxo = await this.lucidService.findUtxoByUnit(transferModuleIdentifier);
     const spendChannelRefUtxo: UTxO = this.getSpendChannelRefUtxo();
-    const spendTransferModuleRefUtxo: UTxO = this.getSpendTransferModuleRefUtxo();
+    const spendTransferModuleRefUtxo: UTxO = this.getSpendTransferModuleRefUtxo();;
+
+    const transferModuleDatum = await this.lucidService.decodeDatum<TransferModuleDatum>(spendTransferModuleRefUtxo.datum!, 'spendTransferModule');
     // channel id
     const channelId = convertString2Hex(recvPacketOperator.channelId);
     // Init packet
@@ -427,6 +430,10 @@ export class PacketService {
       )
     ) {
       this.logger.log('recv unescrow');
+      const encodedUpdatedSpendTransferModuleDatum: string = await this.lucidService.encode<TransferModuleDatum>(
+        transferModuleDatum,
+        'spendTransferModule',
+      );
       const unsignedRecvPacketUnescrowParams: UnsignedRecvPacketUnescrowDto = {
         channelUtxo,
         connectionUtxo,
@@ -439,6 +446,7 @@ export class PacketService {
         encodedSpendTransferModuleRedeemer,
         channelTokenUnit,
         encodedUpdatedChannelDatum,
+        encodedUpdatedSpendTransferModuleDatum,
         transferAmount: BigInt(fungibleTokenPacketData.amount),
         receiverAddress: this.lucidService.credentialToAddress(fungibleTokenPacketData.receiver),
         constructedAddress,
@@ -469,7 +477,16 @@ export class PacketService {
 
     const prefixedDenom = convertString2Hex(sourcePrefix + fungibleTokenPacketData.denom);
     const voucherTokenName = hashSha3_256(prefixedDenom);
-    const voucherTokenUnit = this.configService.get('deployment').validators.mintVoucher.scriptHash + voucherTokenName;
+    const voucherTokenUnit = this.configService.get('deployment').validators.mintVoucher.scriptHash + voucherTokenName
+    const updatedTransferModuleDatum: TransferModuleDatum = {
+        denom_trace: insertSortMapWithNumberKey(transferModuleDatum.denom_trace, voucherTokenUnit, sourcePrefix + fungibleTokenPacketData.denom),
+    }
+
+    const encodedUpdatedTransferModuleDatum: string = await this.lucidService.encode<TransferModuleDatum>(
+        updatedTransferModuleDatum,
+        'spendTransferModule',
+    );
+
     const unsignedRecvPacketMintParams: UnsignedRecvPacketMintDto = {
       channelUtxo,
       connectionUtxo,
@@ -483,6 +500,7 @@ export class PacketService {
       encodedSpendTransferModuleRedeemer,
       encodedMintVoucherRedeemer,
       encodedUpdatedChannelDatum,
+      encodedUpdatedTransferModuleDatum,
 
       channelTokenUnit,
       voucherTokenUnit,
@@ -695,6 +713,14 @@ export class PacketService {
     const transferModuleUtxo = await this.lucidService.findUtxoByUnit(transferModuleIdentifier);
     const spendChannelRefUtxo: UTxO = this.getSpendChannelRefUtxo();
     const spendTransferModuleRefUtxo: UTxO = this.getSpendTransferModuleRefUtxo();
+    const spendTransferModuleDatum = await this.lucidService.decodeDatum<TransferModuleDatum>(
+      spendTransferModuleRefUtxo.datum!,
+      'spendTransferModule',
+    );
+    const encodedSpendTransferModuleDatum: string = await this.lucidService.encode<TransferModuleDatum>(
+      spendTransferModuleDatum,
+      'spendTransferModule',
+    );
     // channel id
     const channelId = convertString2Hex(sendPacketOperator.sourceChannel);
 
@@ -775,10 +801,12 @@ export class PacketService {
       'channel',
     );
     const deploymentConfig = this.configService.get('deployment');
-
+    const denomTrace = spendTransferModuleDatum.denom_trace;
+    const sourceDenom = denomTrace.get(sendPacketOperator.token.denom);
     if (
+      sourceDenom &&
       this._hasVoucherPrefix(
-        sendPacketOperator.token.denom,
+        sourceDenom,
         sendPacketOperator.sourcePort,
         sendPacketOperator.sourceChannel,
       )
@@ -816,6 +844,7 @@ export class PacketService {
         encodedSpendChannelRedeemer: encodedSpendChannelRedeemer,
         encodedSpendTransferModuleRedeemer: encodedSpendTransferModuleRedeemer,
         encodedUpdatedChannelDatum: encodedUpdatedChannelDatum,
+        encodedUpdatedSpendTransferModuleDatum: encodedSpendTransferModuleDatum,
 
         transferAmount: BigInt(sendPacketOperator.token.amount),
         senderAddress,
@@ -841,6 +870,7 @@ export class PacketService {
       encodedSpendChannelRedeemer: encodedSpendChannelRedeemer,
       encodedSpendTransferModuleRedeemer: encodedSpendTransferModuleRedeemer,
       encodedUpdatedChannelDatum: encodedUpdatedChannelDatum,
+      encodedUpdatedSpendTransferModuleDatum: encodedSpendTransferModuleDatum,
 
       transferAmount: BigInt(sendPacketOperator.token.amount),
       senderAddress: sendPacketOperator.sender,

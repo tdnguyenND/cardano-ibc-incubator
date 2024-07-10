@@ -50,6 +50,11 @@ import { UnsignedAckPacketMintDto } from './dtos/packet/ack-packet-mint.dto';
 import { UnsignedSendPacketBurnDto } from './dtos/packet/send-packet-burn.dto';
 import { UnsignedTimeoutRefreshDto } from './dtos/packet/timeout-refresh-dto';
 import { UnsignedAckPacketSucceedDto } from './dtos/packet/ack-packet-succeed.dto';
+import {
+  decodeTransferModuleDatum,
+  encodeTransferModuleDatum,
+  TransferModuleDatum
+} from "@shared/types/transfer-module-datum";
 type CodecType =
   | 'client'
   | 'connection'
@@ -64,7 +69,8 @@ type CodecType =
   | 'mintChannelRedeemer'
   | 'spendChannelRedeemer'
   | 'iBCModuleRedeemer'
-  | 'mintVoucherRedeemer';
+  | 'mintVoucherRedeemer'
+  | 'spendTransferModule';
 @Injectable()
 export class LucidService {
   constructor(
@@ -169,6 +175,8 @@ export class LucidService {
           return (await decodeChannelDatum(encodedDatum, this.LucidImporter)) as T;
         case 'mockModule':
           return (await decodeMockModuleDatum(encodedDatum, this.LucidImporter)) as T;
+        case 'spendTransferModule':
+            return (await decodeTransferModuleDatum(encodedDatum, this.LucidImporter)) as T;
         default:
           throw new Error(`Unknown datum type: ${type}`);
       }
@@ -208,6 +216,8 @@ export class LucidService {
           return await encodeIBCModuleRedeemer(data as IBCModuleRedeemer, this.LucidImporter);
         case 'mintVoucherRedeemer':
           return await encodeMintVoucherRedeemer(data as MintVoucherRedeemer, this.LucidImporter);
+        case 'spendTransferModule':
+            return await encodeTransferModuleDatum(data as TransferModuleDatum, this.LucidImporter);
         default:
           throw new Error(`Unknown datum type: ${type}`);
       }
@@ -574,7 +584,7 @@ export class LucidService {
       .payToContract(
         deploymentConfig.modules.transfer.address,
         {
-          inline: this.LucidImporter.Data.void(),
+          inline: dto.encodedUpdatedSpendTransferModuleDatum,
         },
         {
           ...dto.transferModuleUtxo.assets,
@@ -613,7 +623,7 @@ export class LucidService {
       .payToContract(
         deploymentConfig.modules.transfer.address,
         {
-          inline: this.LucidImporter.Data.void(),
+          inline: dto.encodedUpdatedChannelDatum,
         },
         {
           ...dto.transferModuleUtxo.assets,
@@ -866,7 +876,7 @@ export class LucidService {
       .payToContract(
         deploymentConfig.modules.transfer.address,
         {
-          inline: this.LucidImporter.Data.void(),
+          inline: dto.encodedUpdatedSpendTransferModuleDatum,
         },
         {
           ...dto.transferModuleUTxO.assets,
