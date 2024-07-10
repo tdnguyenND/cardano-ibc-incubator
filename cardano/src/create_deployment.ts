@@ -39,6 +39,7 @@ import {
   OutputReferenceSchema,
 } from "../lucid-types/aiken/transaction/OutputReference.ts";
 import { MockModuleDatum } from "../lucid-types/ibc/apps/mock/datum/MockModuleDatum.ts";
+import { TransferModuleDatum } from "../lucid-types/ibc/apps/transfer/transfer_module_datum/TransferModuleDatum.ts";
 import { MintPortRedeemer } from "../lucid-types/ibc/core/ics_005/port_redeemer/MintPortRedeemer.ts";
 import { insertSortMap } from "./utils.ts";
 
@@ -694,6 +695,9 @@ const deployTransferModule = async (
       ),
     },
   };
+  const transferModuleDatum: TransferModuleDatum = {
+    denom_trace: new Map(),
+  };
   const spendHandlerRedeemer: HandlerOperator = "HandlerBindPort";
 
   const mintPortRedeemer: MintPortRedeemer = {
@@ -735,7 +739,7 @@ const deployTransferModule = async (
     .payToContract(
       spendTransferModuleAddress,
       {
-        inline: Data.void(),
+        inline: Data.to(transferModuleDatum, TransferModuleDatum),
       },
       {
         [identifierTokenUnit]: 1n,

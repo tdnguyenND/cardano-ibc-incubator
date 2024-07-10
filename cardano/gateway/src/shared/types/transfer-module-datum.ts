@@ -6,11 +6,9 @@ export type TransferModuleDatum = {
 
 export async function encodeTransferModuleDatum(transferModuleDatum: TransferModuleDatum, Lucid: typeof import('@dinhbx/lucid-custom')) {
     const {Data} = Lucid;
-
     const TransferModuleDatumSchema = Data.Object({
         denom_trace: Data.Map(Data.Bytes(), Data.Bytes()),
     });
-    type TTransferModuleDatum = Data.Static<typeof TransferModuleDatumSchema>;
     const TTransferModuleDatum = TransferModuleDatumSchema as unknown as TransferModuleDatum;
     return Data.to(transferModuleDatum, TTransferModuleDatum);
 }
@@ -20,8 +18,6 @@ export async function decodeTransferModuleDatum(transferModuleDatum: string, Luc
     const TransferModuleDatumSchema = Data.Object({
         denom_trace: Data.Map(Data.Bytes(), Data.Bytes()),
     });
-    type TTransferModuleDatum = Data.Static<typeof TransferModuleDatumSchema>;
     const TTransferModuleDatum = TransferModuleDatumSchema as unknown as TransferModuleDatum;
-    Data.from(transferModuleDatum, TTransferModuleDatum);
     return Data.from(transferModuleDatum, TTransferModuleDatum);
 }

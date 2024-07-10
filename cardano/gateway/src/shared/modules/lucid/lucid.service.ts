@@ -801,7 +801,7 @@ export class LucidService {
       .payToContract(
         dto.transferModuleAddress,
         {
-          inline: this.LucidImporter.Data.void(),
+          inline: dto.transferModuleUtxo.datum!,
         },
         {
           ...dto.transferModuleUtxo.assets,
@@ -832,7 +832,7 @@ export class LucidService {
       .payToContract(
         dto.transferModuleAddress,
         {
-          inline: this.LucidImporter.Data.void(),
+          inline: dto.transferModuleUtxo.datum!,
         },
         {
           ...dto.transferModuleUtxo.assets,
