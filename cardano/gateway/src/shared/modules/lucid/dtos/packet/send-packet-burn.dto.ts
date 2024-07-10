@@ -14,7 +14,6 @@ export type UnsignedSendPacketBurnDto = {
   encodedSpendTransferModuleRedeemer: string;
   encodedMintVoucherRedeemer: string;
   encodedUpdatedChannelDatum: string;
-  encodedUpdatedSpendTransferModuleDatum: string;
 
   channelTokenUnit: string;
   voucherTokenUnit: string;

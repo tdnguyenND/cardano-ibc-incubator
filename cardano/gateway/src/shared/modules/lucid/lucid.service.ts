@@ -447,7 +447,7 @@ export class LucidService {
     });
     addPayToContract(
       deploymentConfig.modules.transfer.address,
-      this.LucidImporter.Data.void(),
+      dto.transferModuleUtxo.datum!,
       dto.transferModuleUtxo.assets,
     );
 
@@ -516,7 +516,7 @@ export class LucidService {
       .payToContract(
         deploymentConfig.modules.transfer.address,
         {
-          inline: this.LucidImporter.Data.void(),
+          inline: dto.transferModuleUtxo.datum!,
         },
         dto.transferModuleUtxo.assets,
       );
@@ -584,7 +584,7 @@ export class LucidService {
       .payToContract(
         deploymentConfig.modules.transfer.address,
         {
-          inline: dto.encodedUpdatedSpendTransferModuleDatum,
+          inline: dto.transferModuleUtxo.datum!,
         },
         {
           ...dto.transferModuleUtxo.assets,
@@ -655,7 +655,7 @@ export class LucidService {
       .payToContract(
         deploymentConfig.modules.transfer.address,
         {
-          inline: this.LucidImporter.Data.void(),
+          inline: dto.transferModuleUtxo.datum!,
         },
         {
           ...dto.transferModuleUtxo.assets,
@@ -684,7 +684,7 @@ export class LucidService {
       .payToContract(
         deploymentConfig.modules.transfer.address,
         {
-          inline: this.LucidImporter.Data.void(),
+          inline: dto.transferModuleUtxo.datum!,
         },
         {
           ...dto.transferModuleUtxo.assets,
@@ -727,7 +727,7 @@ export class LucidService {
       .payToContract(
         deploymentConfig.modules.transfer.address,
         {
-          inline: this.LucidImporter.Data.void(),
+          inline: dto.transferModuleUtxo.datum!,
         },
         {
           ...dto.transferModuleUtxo.assets,
@@ -763,7 +763,7 @@ export class LucidService {
       .payToContract(
         dto.transferModuleAddress,
         {
-          inline: this.LucidImporter.Data.void(),
+          inline: dto.transferModuleUTxO.datum!,
         },
         {
           ...dto.transferModuleUTxO.assets,
@@ -876,7 +876,7 @@ export class LucidService {
       .payToContract(
         deploymentConfig.modules.transfer.address,
         {
-          inline: dto.encodedUpdatedSpendTransferModuleDatum,
+          inline: dto.transferModuleUTxO.datum!,
         },
         {
           ...dto.transferModuleUTxO.assets,

@@ -11,7 +11,6 @@ export type UnsignedSendPacketEscrowDto = {
   encodedSpendChannelRedeemer: string;
   encodedSpendTransferModuleRedeemer: string;
   encodedUpdatedChannelDatum: string;
-  encodedUpdatedSpendTransferModuleDatum: string;
 
   transferAmount: bigint;
   senderAddress: string;

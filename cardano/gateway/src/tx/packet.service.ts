@@ -430,10 +430,6 @@ export class PacketService {
       )
     ) {
       this.logger.log('recv unescrow');
-      const encodedUpdatedSpendTransferModuleDatum: string = await this.lucidService.encode<TransferModuleDatum>(
-        transferModuleDatum,
-        'spendTransferModule',
-      );
       const unsignedRecvPacketUnescrowParams: UnsignedRecvPacketUnescrowDto = {
         channelUtxo,
         connectionUtxo,
@@ -446,7 +442,6 @@ export class PacketService {
         encodedSpendTransferModuleRedeemer,
         channelTokenUnit,
         encodedUpdatedChannelDatum,
-        encodedUpdatedSpendTransferModuleDatum,
         transferAmount: BigInt(fungibleTokenPacketData.amount),
         receiverAddress: this.lucidService.credentialToAddress(fungibleTokenPacketData.receiver),
         constructedAddress,
@@ -717,10 +712,6 @@ export class PacketService {
       spendTransferModuleRefUtxo.datum!,
       'spendTransferModule',
     );
-    const encodedSpendTransferModuleDatum: string = await this.lucidService.encode<TransferModuleDatum>(
-      spendTransferModuleDatum,
-      'spendTransferModule',
-    );
     // channel id
     const channelId = convertString2Hex(sendPacketOperator.sourceChannel);
 
@@ -844,7 +835,6 @@ export class PacketService {
         encodedSpendChannelRedeemer: encodedSpendChannelRedeemer,
         encodedSpendTransferModuleRedeemer: encodedSpendTransferModuleRedeemer,
         encodedUpdatedChannelDatum: encodedUpdatedChannelDatum,
-        encodedUpdatedSpendTransferModuleDatum: encodedSpendTransferModuleDatum,
 
         transferAmount: BigInt(sendPacketOperator.token.amount),
         senderAddress,
@@ -870,7 +860,6 @@ export class PacketService {
       encodedSpendChannelRedeemer: encodedSpendChannelRedeemer,
       encodedSpendTransferModuleRedeemer: encodedSpendTransferModuleRedeemer,
       encodedUpdatedChannelDatum: encodedUpdatedChannelDatum,
-      encodedUpdatedSpendTransferModuleDatum: encodedSpendTransferModuleDatum,
 
       transferAmount: BigInt(sendPacketOperator.token.amount),
       senderAddress: sendPacketOperator.sender,
