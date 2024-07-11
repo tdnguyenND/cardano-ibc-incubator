@@ -475,7 +475,7 @@ export class PacketService {
     const voucherTokenName = hashSha3_256(prefixedDenom);
     const voucherTokenUnit = this.configService.get('deployment').validators.mintVoucher.scriptHash + voucherTokenName
     const updatedTransferModuleDatum: TransferModuleDatum = {
-        denom_trace: insertSortMap(transferModuleDatum.denom_trace, convertString2Hex(voucherTokenUnit), prefixedDenom),
+        denom_trace: insertSortMap(transferModuleDatum.denom_trace, convertString2Hex(voucherTokenUnit.toLowerCase()), prefixedDenom),
     }
 
     const encodedUpdatedTransferModuleDatum: string = await this.lucidService.encode<TransferModuleDatum>(
@@ -794,7 +794,7 @@ export class PacketService {
     );
     const deploymentConfig = this.configService.get('deployment');
     const denomTrace = transferModuleDatum.denom_trace;
-    const sourceDenom = denomTrace.get(convertString2Hex(sendPacketOperator.token.denom));
+    const sourceDenom = denomTrace.get(convertString2Hex(sendPacketOperator.token.denom.toLowerCase()));
     if (
       sourceDenom &&
       this._hasVoucherPrefix(
