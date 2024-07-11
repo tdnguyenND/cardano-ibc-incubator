@@ -9,6 +9,7 @@ export async function encodeTransferModuleDatum(transferModuleDatum: TransferMod
     const TransferModuleDatumSchema = Data.Object({
         denom_trace: Data.Map(Data.Bytes(), Data.Bytes()),
     });
+    type TTransferModuleDatum = Data.Static<typeof TransferModuleDatumSchema>;
     const TTransferModuleDatum = TransferModuleDatumSchema as unknown as TransferModuleDatum;
     return Data.to(transferModuleDatum, TTransferModuleDatum);
 }

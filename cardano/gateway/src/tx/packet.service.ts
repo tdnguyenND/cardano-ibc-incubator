@@ -473,8 +473,10 @@ export class PacketService {
     const prefixedDenom = convertString2Hex(sourcePrefix + fungibleTokenPacketData.denom);
     const voucherTokenName = hashSha3_256(prefixedDenom);
     const voucherTokenUnit = this.configService.get('deployment').validators.mintVoucher.scriptHash + voucherTokenName
+    let denom_trace = transferModuleDatum.denom_trace
+    denom_trace.set(voucherTokenUnit, sourcePrefix + fungibleTokenPacketData.denom)
     const updatedTransferModuleDatum: TransferModuleDatum = {
-        denom_trace: insertSortMapWithNumberKey(transferModuleDatum.denom_trace, voucherTokenUnit, sourcePrefix + fungibleTokenPacketData.denom),
+        denom_trace,
     }
 
     const encodedUpdatedTransferModuleDatum: string = await this.lucidService.encode<TransferModuleDatum>(
