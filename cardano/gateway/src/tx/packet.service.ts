@@ -820,7 +820,7 @@ export class PacketService {
       const voucherTokenUnit = deploymentConfig.validators.mintVoucher.scriptHash + voucherTokenName;
       const senderAddress = sendPacketOperator.sender;
 
-      const senderVoucherTokenUtxo = await this.lucidService.findUtxoAtWithUnit(senderAddress, voucherTokenUnit);
+      // const senderVoucherTokenUtxo = await this.lucidService.findUtxoAtWithUnit(senderAddress, voucherTokenUnit);
       // send burn
       const unsignedSendPacketParams: UnsignedSendPacketBurnDto = {
         channelUTxO: channelUtxo,
@@ -829,7 +829,7 @@ export class PacketService {
         spendChannelRefUTxO: spendChannelRefUtxo,
         spendTransferModuleUTxO: spendTransferModuleRefUtxo,
         transferModuleUTxO: transferModuleUtxo,
-        senderVoucherTokenUtxo,
+        // senderVoucherTokenUtxo,
         mintVoucherRefUtxo,
 
         encodedMintVoucherRedeemer,

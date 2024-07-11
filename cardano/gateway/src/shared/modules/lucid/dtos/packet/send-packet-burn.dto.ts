@@ -8,7 +8,7 @@ export type UnsignedSendPacketBurnDto = {
   spendTransferModuleUTxO: UTxO;
   transferModuleUTxO: UTxO;
   mintVoucherRefUtxo: UTxO;
-  senderVoucherTokenUtxo: UTxO;
+  // senderVoucherTokenUtxo: UTxO;
 
   encodedSpendChannelRedeemer: string;
   encodedSpendTransferModuleRedeemer: string;

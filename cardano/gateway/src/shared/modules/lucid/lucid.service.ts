@@ -860,7 +860,7 @@ export class LucidService {
     tx.readFrom([dto.spendChannelRefUTxO, dto.spendTransferModuleUTxO, dto.mintVoucherRefUtxo])
       .collectFrom([dto.channelUTxO], dto.encodedSpendChannelRedeemer)
       .collectFrom([dto.transferModuleUTxO], dto.encodedSpendTransferModuleRedeemer)
-      .collectFrom([dto.senderVoucherTokenUtxo])
+      // .collectFrom([dto.senderVoucherTokenUtxo])
       .readFrom([dto.connectionUTxO, dto.clientUTxO])
       .mintAssets(
         {
