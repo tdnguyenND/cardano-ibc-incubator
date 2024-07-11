@@ -719,7 +719,7 @@ export class PacketService {
     // build transfer module redeemer
     const deploymentConfig = this.configService.get('deployment');
     const denomTrace = transferModuleDatum.denom_trace.get(convertString2Hex(sendPacketOperator.token.denom.toLowerCase()));
-    const denom = denomTrace == undefined ? sendPacketOperator.token.denom : denomTrace; // hex
+    const denom = denomTrace == undefined ? convertString2Hex(sendPacketOperator.token.denom) : denomTrace; // hex
     // fungible token packet data
     const fTokenPacketData: FungibleTokenPacketDatum = {
       denom: convertHex2String(denom),
