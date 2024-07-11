@@ -623,7 +623,7 @@ export class LucidService {
       .payToContract(
         deploymentConfig.modules.transfer.address,
         {
-          inline: dto.encodedUpdatedChannelDatum,
+          inline: dto.encodedUpdatedTransferModuleDatum,
         },
         {
           ...dto.transferModuleUtxo.assets,
