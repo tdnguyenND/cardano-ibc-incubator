@@ -29,7 +29,7 @@ import { IBCModuleRedeemer } from '@shared/types/port/ibc_module_redeemer';
 import {
   deleteKeySortMap,
   deleteSortMap,
-  getDenomPrefix,
+  getDenomPrefix, insertSortMap,
   insertSortMapWithNumberKey,
   sortedStringify,
 } from '@shared/helpers/helper';
@@ -473,10 +473,8 @@ export class PacketService {
     const prefixedDenom = convertString2Hex(sourcePrefix + fungibleTokenPacketData.denom);
     const voucherTokenName = hashSha3_256(prefixedDenom);
     const voucherTokenUnit = this.configService.get('deployment').validators.mintVoucher.scriptHash + voucherTokenName
-    let denom_trace = transferModuleDatum.denom_trace
-    denom_trace.set(voucherTokenUnit, sourcePrefix + fungibleTokenPacketData.denom)
     const updatedTransferModuleDatum: TransferModuleDatum = {
-        denom_trace,
+        denom_trace: insertSortMap(transferModuleDatum.denom_trace, convertString2Hex(voucherTokenUnit), prefixedDenom),
     }
 
     const encodedUpdatedTransferModuleDatum: string = await this.lucidService.encode<TransferModuleDatum>(
