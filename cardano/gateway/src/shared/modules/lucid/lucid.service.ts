@@ -864,7 +864,7 @@ export class LucidService {
       .readFrom([dto.connectionUTxO, dto.clientUTxO])
       .mintAssets(
         {
-          [dto.voucherTokenUnit]: -BigInt(dto.transferAmount),
+          [dto.denomToken]: -BigInt(dto.transferAmount),
         },
         dto.encodedMintVoucherRedeemer,
       )
