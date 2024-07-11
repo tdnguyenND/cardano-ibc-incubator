@@ -717,10 +717,9 @@ export class PacketService {
     const channelId = convertString2Hex(sendPacketOperator.sourceChannel);
 
     // build transfer module redeemer
-    let denom =
-      sendPacketOperator.token.denom === LOVELACE
-        ? convertString2Hex(sendPacketOperator.token.denom)
-        : sendPacketOperator.token.denom;
+    const deploymentConfig = this.configService.get('deployment');
+    const denomTrace = transferModuleDatum.denom_trace.get(convertString2Hex(sendPacketOperator.token.denom.toLowerCase()));
+    const denom = denomTrace == undefined ? sendPacketOperator.token.denom : denomTrace; // hex
     // fungible token packet data
     const fTokenPacketData: FungibleTokenPacketDatum = {
       denom: denom,
@@ -754,6 +753,27 @@ export class PacketService {
       'spendChannelRedeemer',
     );
 
+    const transferModuleRedeemer: TransferModuleRedeemer = {
+      Transfer: {
+        channel_id: channelId,
+        data: {
+          denom: denom,
+          amount: convertString2Hex(sendPacketOperator.token.amount.toString()),
+          sender: convertString2Hex(sendPacketOperator.sender),
+          receiver: convertString2Hex(sendPacketOperator.receiver),
+          memo: convertString2Hex(sendPacketOperator.memo),
+        },
+      },
+    };
+    const spendTransferModuleRedeemer: IBCModuleRedeemer = {
+      Operator: [transferModuleRedeemer, this.lucidService.LucidImporter], //TODO
+    };
+
+    const encodedSpendTransferModuleRedeemer: string = await this.lucidService.encode(
+      spendTransferModuleRedeemer,
+      'iBCModuleRedeemer',
+    );
+
     // update channel datum
     const updatedChannelDatum: ChannelDatum = {
       ...channelDatum,
@@ -771,39 +791,15 @@ export class PacketService {
       updatedChannelDatum,
       'channel',
     );
-    const deploymentConfig = this.configService.get('deployment');
-    const denomTrace = transferModuleDatum.denom_trace;
-    const sourceDenom = denomTrace.get(convertString2Hex(sendPacketOperator.token.denom.toLowerCase()));
     if (
-      sourceDenom &&
+      denomTrace &&
       this._hasVoucherPrefix(
-        convertHex2String(sourceDenom),
+        convertHex2String(denomTrace),
         sendPacketOperator.sourcePort,
         sendPacketOperator.sourceChannel,
       )
     ) {
       this.logger.log('send burn');
-
-      const transferModuleRedeemer: TransferModuleRedeemer = {
-        Transfer: {
-          channel_id: channelId,
-          data: {
-            denom: sourceDenom,
-            amount: convertString2Hex(sendPacketOperator.token.amount.toString()),
-            sender: convertString2Hex(sendPacketOperator.sender),
-            receiver: convertString2Hex(sendPacketOperator.receiver),
-            memo: convertString2Hex(sendPacketOperator.memo),
-          },
-        },
-      };
-      const spendTransferModuleRedeemer: IBCModuleRedeemer = {
-        Operator: [transferModuleRedeemer, this.lucidService.LucidImporter], //TODO
-      };
-
-      const encodedSpendTransferModuleRedeemer: string = await this.lucidService.encode(
-          spendTransferModuleRedeemer,
-          'iBCModuleRedeemer',
-      );
       const mintVoucherRefUtxo = deploymentConfig.validators.mintVoucher.refUtxo;
       const mintVoucherRedeemer: MintVoucherRedeemer = {
         BurnVoucher: {
@@ -848,27 +844,6 @@ export class PacketService {
 
       return this.lucidService.createUnsignedSendPacketBurnTx(unsignedSendPacketParams);
     }
-
-    const transferModuleRedeemer: TransferModuleRedeemer = {
-      Transfer: {
-        channel_id: channelId,
-        data: {
-          denom: convertString2Hex(denom),
-          amount: convertString2Hex(sendPacketOperator.token.amount.toString()),
-          sender: convertString2Hex(sendPacketOperator.sender),
-          receiver: convertString2Hex(sendPacketOperator.receiver),
-          memo: convertString2Hex(sendPacketOperator.memo),
-        },
-      },
-    };
-    const spendTransferModuleRedeemer: IBCModuleRedeemer = {
-      Operator: [transferModuleRedeemer, this.lucidService.LucidImporter], //TODO
-    };
-
-    const encodedSpendTransferModuleRedeemer: string = await this.lucidService.encode(
-        spendTransferModuleRedeemer,
-        'iBCModuleRedeemer',
-    );
     // escrow
     this.logger.log('send escrow');
     const unsignedSendPacketParams: UnsignedSendPacketEscrowDto = {
