@@ -425,8 +425,8 @@ export class PacketService {
     if (
       this._hasVoucherPrefix(
         fungibleTokenPacketData.denom,
-        convertHex2String(packet.destination_port),
-        convertHex2String(packet.destination_channel),
+        convertHex2String(packet.source_port),
+        convertHex2String(packet.source_channel),
       )
     ) {
       this.logger.log('recv unescrow');
@@ -437,6 +437,7 @@ export class PacketService {
         spendChannelRefUtxo,
         spendTransferModuleRefUtxo,
         transferModuleUtxo,
+        denomToken: this._unpackOriginalDenom(fungibleTokenPacketData.denom, convertHex2String(packet.source_port), convertHex2String(packet.source_channel)),
 
         encodedSpendChannelRedeemer,
         encodedSpendTransferModuleRedeemer,
@@ -1130,6 +1131,10 @@ export class PacketService {
   private _hasVoucherPrefix(denom: string, portId: string, channelId: string): boolean {
     const voucherPrefix = getDenomPrefix(portId, channelId);
     return denom.startsWith(voucherPrefix);
+  }
+  private _unpackOriginalDenom(denom: string, portId: string, channelId: string): string {
+    const voucherPrefix = getDenomPrefix(portId, channelId);
+    return denom.slice(voucherPrefix.length);
   }
   private getSpendChannelRefUtxo(): UTxO {
     return this.configService.get('deployment').validators.spendChannel.refUtxo;

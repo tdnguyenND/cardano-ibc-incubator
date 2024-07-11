@@ -15,4 +15,6 @@ export type UnsignedRecvPacketUnescrowDto = {
   transferAmount: bigint;
   receiverAddress: string;
   constructedAddress: string;
+
+  denomToken: string;
 };
