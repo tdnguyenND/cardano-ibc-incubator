@@ -754,27 +754,6 @@ export class PacketService {
       'spendChannelRedeemer',
     );
 
-    const transferModuleRedeemer: TransferModuleRedeemer = {
-      Transfer: {
-        channel_id: channelId,
-        data: {
-          denom: convertString2Hex(denom),
-          amount: convertString2Hex(sendPacketOperator.token.amount.toString()),
-          sender: convertString2Hex(sendPacketOperator.sender),
-          receiver: convertString2Hex(sendPacketOperator.receiver),
-          memo: convertString2Hex(sendPacketOperator.memo),
-        },
-      },
-    };
-    const spendTransferModuleRedeemer: IBCModuleRedeemer = {
-      Operator: [transferModuleRedeemer, this.lucidService.LucidImporter], //TODO
-    };
-
-    const encodedSpendTransferModuleRedeemer: string = await this.lucidService.encode(
-      spendTransferModuleRedeemer,
-      'iBCModuleRedeemer',
-    );
-
     // update channel datum
     const updatedChannelDatum: ChannelDatum = {
       ...channelDatum,
@@ -804,6 +783,27 @@ export class PacketService {
       )
     ) {
       this.logger.log('send burn');
+
+      const transferModuleRedeemer: TransferModuleRedeemer = {
+        Transfer: {
+          channel_id: channelId,
+          data: {
+            denom: sourceDenom,
+            amount: convertString2Hex(sendPacketOperator.token.amount.toString()),
+            sender: convertString2Hex(sendPacketOperator.sender),
+            receiver: convertString2Hex(sendPacketOperator.receiver),
+            memo: convertString2Hex(sendPacketOperator.memo),
+          },
+        },
+      };
+      const spendTransferModuleRedeemer: IBCModuleRedeemer = {
+        Operator: [transferModuleRedeemer, this.lucidService.LucidImporter], //TODO
+      };
+
+      const encodedSpendTransferModuleRedeemer: string = await this.lucidService.encode(
+          spendTransferModuleRedeemer,
+          'iBCModuleRedeemer',
+      );
       const mintVoucherRefUtxo = deploymentConfig.validators.mintVoucher.refUtxo;
       const mintVoucherRedeemer: MintVoucherRedeemer = {
         BurnVoucher: {
@@ -848,6 +848,27 @@ export class PacketService {
 
       return this.lucidService.createUnsignedSendPacketBurnTx(unsignedSendPacketParams);
     }
+
+    const transferModuleRedeemer: TransferModuleRedeemer = {
+      Transfer: {
+        channel_id: channelId,
+        data: {
+          denom: convertString2Hex(denom),
+          amount: convertString2Hex(sendPacketOperator.token.amount.toString()),
+          sender: convertString2Hex(sendPacketOperator.sender),
+          receiver: convertString2Hex(sendPacketOperator.receiver),
+          memo: convertString2Hex(sendPacketOperator.memo),
+        },
+      },
+    };
+    const spendTransferModuleRedeemer: IBCModuleRedeemer = {
+      Operator: [transferModuleRedeemer, this.lucidService.LucidImporter], //TODO
+    };
+
+    const encodedSpendTransferModuleRedeemer: string = await this.lucidService.encode(
+        spendTransferModuleRedeemer,
+        'iBCModuleRedeemer',
+    );
     // escrow
     this.logger.log('send escrow');
     const unsignedSendPacketParams: UnsignedSendPacketEscrowDto = {
