@@ -348,7 +348,7 @@ export class PacketService {
     const spendChannelRefUtxo: UTxO = this.getSpendChannelRefUtxo();
     const spendTransferModuleRefUtxo: UTxO = this.getSpendTransferModuleRefUtxo();;
 
-    const transferModuleDatum = await this.lucidService.decodeDatum<TransferModuleDatum>(spendTransferModuleRefUtxo.datum!, 'spendTransferModule');
+    const transferModuleDatum = await this.lucidService.decodeDatum<TransferModuleDatum>(transferModuleUtxo.datum!, 'spendTransferModule');
     // channel id
     const channelId = convertString2Hex(recvPacketOperator.channelId);
     // Init packet
@@ -708,8 +708,8 @@ export class PacketService {
     const transferModuleUtxo = await this.lucidService.findUtxoByUnit(transferModuleIdentifier);
     const spendChannelRefUtxo: UTxO = this.getSpendChannelRefUtxo();
     const spendTransferModuleRefUtxo: UTxO = this.getSpendTransferModuleRefUtxo();
-    const spendTransferModuleDatum = await this.lucidService.decodeDatum<TransferModuleDatum>(
-      spendTransferModuleRefUtxo.datum!,
+    const transferModuleDatum = await this.lucidService.decodeDatum<TransferModuleDatum>(
+        transferModuleUtxo.datum!,
       'spendTransferModule',
     );
     // channel id
@@ -792,7 +792,7 @@ export class PacketService {
       'channel',
     );
     const deploymentConfig = this.configService.get('deployment');
-    const denomTrace = spendTransferModuleDatum.denom_trace;
+    const denomTrace = transferModuleDatum.denom_trace;
     const sourceDenom = denomTrace.get(sendPacketOperator.token.denom);
     if (
       sourceDenom &&
