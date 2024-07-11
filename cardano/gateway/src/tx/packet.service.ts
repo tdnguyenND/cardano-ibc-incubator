@@ -722,7 +722,7 @@ export class PacketService {
     const denom = denomTrace == undefined ? sendPacketOperator.token.denom : denomTrace; // hex
     // fungible token packet data
     const fTokenPacketData: FungibleTokenPacketDatum = {
-      denom: denom,
+      denom: convertHex2String(denom),
       amount: sendPacketOperator.token.amount.toString(),
       sender: sendPacketOperator.sender,
       receiver: sendPacketOperator.receiver,
