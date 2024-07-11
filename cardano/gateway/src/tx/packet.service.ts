@@ -793,11 +793,11 @@ export class PacketService {
     );
     const deploymentConfig = this.configService.get('deployment');
     const denomTrace = transferModuleDatum.denom_trace;
-    const sourceDenom = denomTrace.get(sendPacketOperator.token.denom);
+    const sourceDenom = denomTrace.get(convertString2Hex(sendPacketOperator.token.denom));
     if (
       sourceDenom &&
       this._hasVoucherPrefix(
-        sourceDenom,
+        convertHex2String(sourceDenom),
         sendPacketOperator.sourcePort,
         sendPacketOperator.sourceChannel,
       )
